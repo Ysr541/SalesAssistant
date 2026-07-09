@@ -9,7 +9,7 @@ interface WorkerParams {
     sampleRate: number
     languages?: string[]
 }
-
+ 
 function appendLibrarySearchPath(libDir: string): void {
     if (!existsSync(libDir)) return
 
