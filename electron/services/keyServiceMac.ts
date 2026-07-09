@@ -40,20 +40,31 @@ export class KeyServiceMac {
     if (isPackaged) {
       candidates.push(join(process.resourcesPath, 'resources', 'key', 'macos', archDir, 'xkey_helper'))
       candidates.push(join(process.resourcesPath, 'resources', 'key', 'macos', 'universal', 'xkey_helper'))
+      candidates.push(join(process.resourcesPath, 'resources', 'key', 'macos', 'universal', 'xkey_helper_macos'))
       candidates.push(join(process.resourcesPath, 'resources', 'key', 'macos', 'xkey_helper'))
+      candidates.push(join(process.resourcesPath, 'resources', 'key', 'macos', 'xkey_helper_macos'))
       candidates.push(join(process.resourcesPath, 'resources', 'xkey_helper'))
+      candidates.push(join(process.resourcesPath, 'resources', 'xkey_helper_macos'))
       candidates.push(join(process.resourcesPath, 'xkey_helper'))
+      candidates.push(join(process.resourcesPath, 'xkey_helper_macos'))
     } else {
       const cwd = process.cwd()
       candidates.push(join(cwd, 'resources', 'key', 'macos', archDir, 'xkey_helper'))
       candidates.push(join(cwd, 'resources', 'key', 'macos', 'universal', 'xkey_helper'))
+      candidates.push(join(cwd, 'resources', 'key', 'macos', 'universal', 'xkey_helper_macos'))
       candidates.push(join(cwd, 'resources', 'key', 'macos', 'xkey_helper'))
+      candidates.push(join(cwd, 'resources', 'key', 'macos', 'xkey_helper_macos'))
       candidates.push(join(cwd, 'resources', 'xkey_helper'))
+      candidates.push(join(cwd, 'resources', 'xkey_helper_macos'))
       candidates.push(join(cwd, 'Xkey', 'build', 'xkey_helper'))
+      candidates.push(join(cwd, 'Xkey', 'build', 'xkey_helper_macos'))
       candidates.push(join(app.getAppPath(), 'resources', 'key', 'macos', archDir, 'xkey_helper'))
       candidates.push(join(app.getAppPath(), 'resources', 'key', 'macos', 'universal', 'xkey_helper'))
+      candidates.push(join(app.getAppPath(), 'resources', 'key', 'macos', 'universal', 'xkey_helper_macos'))
       candidates.push(join(app.getAppPath(), 'resources', 'key', 'macos', 'xkey_helper'))
+      candidates.push(join(app.getAppPath(), 'resources', 'key', 'macos', 'xkey_helper_macos'))
       candidates.push(join(app.getAppPath(), 'resources', 'xkey_helper'))
+      candidates.push(join(app.getAppPath(), 'resources', 'xkey_helper_macos'))
     }
 
     for (const path of candidates) {
