@@ -296,7 +296,6 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
   const [aiInsightCooldownMinutes, setAiInsightCooldownMinutes] = useState(120)
   const [aiInsightScanIntervalHours, setAiInsightScanIntervalHours] = useState(4)
   const [aiInsightContextCount, setAiInsightContextCount] = useState(40)
-  const [aiInsightSystemPrompt, setAiInsightSystemPrompt] = useState('')
   const [aiInsightTelegramEnabled, setAiInsightTelegramEnabled] = useState(false)
   const [aiInsightTelegramToken, setAiInsightTelegramToken] = useState('')
   const [aiInsightTelegramChatIds, setAiInsightTelegramChatIds] = useState('')
@@ -317,7 +316,6 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
   const [aiFootprintSystemPrompt, setAiFootprintSystemPrompt] = useState('')
   const [aiMessageInsightEnabled, setAiMessageInsightEnabled] = useState(false)
   const [aiMessageInsightContextCount, setAiMessageInsightContextCount] = useState(50)
-  const [aiMessageInsightSystemPrompt, setAiMessageInsightSystemPrompt] = useState('')
 
   // 自动下载图片
   const [autoDownloadStatus, setAutoDownloadStatus] = useState<{ isHooked: boolean; pid: number | null; supported: boolean } | null>(null)
@@ -558,7 +556,6 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
       const savedAiInsightCooldownMinutes = await configService.getAiInsightCooldownMinutes()
       const savedAiInsightScanIntervalHours = await configService.getAiInsightScanIntervalHours()
       const savedAiInsightContextCount = await configService.getAiInsightContextCount()
-      const savedAiInsightSystemPrompt = await configService.getAiInsightSystemPrompt()
       const savedAiInsightTelegramEnabled = await configService.getAiInsightTelegramEnabled()
       const savedAiInsightTelegramToken = await configService.getAiInsightTelegramToken()
       const savedAiInsightTelegramChatIds = await configService.getAiInsightTelegramChatIds()
@@ -574,7 +571,6 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
       const savedAiGroupSummaryFilterList = await configService.getAiGroupSummaryFilterList()
       const savedAiMessageInsightEnabled = await configService.getAiMessageInsightEnabled()
       const savedAiMessageInsightContextCount = await configService.getAiMessageInsightContextCount()
-      const savedAiMessageInsightSystemPrompt = await configService.getAiMessageInsightSystemPrompt()
 
       setAiInsightEnabled(savedAiInsightEnabled)
       setAiModelApiBaseUrl(savedAiModelApiBaseUrl)
@@ -591,7 +587,6 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
       setAiInsightCooldownMinutes(savedAiInsightCooldownMinutes)
       setAiInsightScanIntervalHours(savedAiInsightScanIntervalHours)
       setAiInsightContextCount(savedAiInsightContextCount)
-      setAiInsightSystemPrompt(savedAiInsightSystemPrompt)
       setAiInsightTelegramEnabled(savedAiInsightTelegramEnabled)
       setAiInsightTelegramToken(savedAiInsightTelegramToken)
       setAiInsightTelegramChatIds(savedAiInsightTelegramChatIds)
@@ -607,7 +602,6 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
       setAiGroupSummaryFilterList(savedAiGroupSummaryFilterList)
       setAiMessageInsightEnabled(savedAiMessageInsightEnabled)
       setAiMessageInsightContextCount(savedAiMessageInsightContextCount)
-      setAiMessageInsightSystemPrompt(savedAiMessageInsightSystemPrompt)
 
     } catch (e: any) {
       console.error('加载配置失败:', e)
@@ -3579,54 +3573,6 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
       </div>
 
       <div className="divider" />
-      {/* 自定义 System Prompt */}
-      {(() => {
-        const DEFAULT_SYSTEM_PROMPT = `你是用户的私人关系观察助手，名叫"见解"。你的任务是主动提供有价值的观察和建议。
-
-要求：
-1. 必须给出见解。基于聊天记录分析对方情绪、话题趋势、关系动态，或给出回复建议、聊天话题推荐。
-2. 直接、具体、一针见血。不要废话。
-3. 输出纯文本，不使用 Markdown。
-4. 只有在完全没有任何可说的内容时（比如对话只有一条"嗯"），才回复"SKIP"。绝大多数情况下你应该输出见解。`
-
-        // 展示值：有自定义内容时显示自定义内容，否则显示默认值（可直接编辑）
-        const displayValue = aiInsightSystemPrompt || DEFAULT_SYSTEM_PROMPT
-
-        return (
-          <div className="form-group">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-              <label style={{ marginBottom: 0 }}>自定义 AI 见解提示词</label>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={async () => {
-                  // 恢复默认：清空自定义值，UI 回到显示默认内容的状态
-                  setAiInsightSystemPrompt('')
-                  await configService.setAiInsightSystemPrompt('')
-                }}
-              >
-                恢复默认
-              </button>
-            </div>
-            <span className="form-hint">
-              当前显示内置默认提示词，可直接编辑修改。修改后立即生效，无需重启。可变的统计信息（触发次数、对话内容）会自动附加在用户消息里，无需在此填写。
-            </span>
-            <textarea
-              className="field-input ai-prompt-textarea"
-              rows={8}
-              style={{ width: '100%', resize: 'vertical' }}
-              value={displayValue}
-              onChange={(e) => {
-                const val = e.target.value
-                // 如果用户把内容改得和默认值一样，仍存自定义值（不影响功能）
-                setAiInsightSystemPrompt(val)
-                scheduleConfigSave('aiInsightSystemPrompt', () => configService.setAiInsightSystemPrompt(val))
-              }}
-            />
-          </div>
-        )
-      })()}
-
-      <div className="divider" />
 
       {/* 对话过滤名单 */}
       {(() => {
@@ -3989,23 +3935,6 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
   const renderAiMessageInsightTab = () => (
     <div className="tab-content">
       {(() => {
-        const DEFAULT_MESSAGE_INSIGHT_PROMPT = `你是一个克制、准确的聊天语义分析助手。你的任务是把用户选中的一句聊天消息做深度解析，帮助用户理解对方未明说的含义。
-
-严格要求：
-1. 必须且只能输出合法的纯 JSON。
-2. 禁止输出解释说明、前言后语，禁止使用 Markdown 或代码块。
-3. 不要编造上下文没有支持的信息；不确定时用谨慎表述。
-4. explicit_text 用自然中文说明这句话可能想表达的真实含义。
-5. emotion、intent、topic 必须是短标签。
-
-JSON 输出格式：
-{
-  "explicit_text": "暗示转明示",
-  "emotion": "2-6字情绪标签",
-  "intent": "2-8字意图标签",
-  "topic": "2-8字话题标签"
-}`
-        const displayValue = aiMessageInsightSystemPrompt || DEFAULT_MESSAGE_INSIGHT_PROMPT
         return (
           <>
             <div className="form-group">
@@ -4050,37 +3979,6 @@ JSON 输出格式：
               />
             </div>
 
-            <div className="form-group">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                <label style={{ marginBottom: 0 }}>消息解析提示词</label>
-                <button
-                  className="btn btn-secondary btn-sm"
-                  onClick={async () => {
-                    setAiMessageInsightSystemPrompt('')
-                    await configService.setAiMessageInsightSystemPrompt('')
-                  }}
-                >
-                  恢复默认
-                </button>
-              </div>
-              <span className="form-hint">
-                消息解析专用提示词。留空时使用内置默认提示词。
-              </span>
-              <textarea
-                className="field-input ai-prompt-textarea"
-                rows={10}
-                style={{ width: '100%', resize: 'vertical' }}
-                value={displayValue}
-                onChange={(e) => {
-                  const val = e.target.value
-                  setAiMessageInsightSystemPrompt(val)
-                  scheduleConfigSave('aiMessageInsightSystemPrompt', () => configService.setAiMessageInsightSystemPrompt(val))
-                }}
-              />
-              <span className="form-hint" style={{ color: 'var(--danger, #ef4444)', marginTop: 8, display: 'block' }}>
-                该提示词控制 JSON 输出结构和解析口径，不建议随意修改，否则可能导致解析失败或内容错位。
-              </span>
-            </div>
           </>
         )
       })()}
@@ -4469,15 +4367,6 @@ JSON 输出格式：
 
       <div className="about-footer">
         <p className="about-desc">微信聊天记录分析工具</p>
-        <div className="about-links">
-          <a href="#" onClick={(e) => { e.preventDefault(); window.electronAPI.shell.openExternal('https://weflow.top') }}>官网</a>
-          <span>·</span>
-          <a href="#" onClick={(e) => { e.preventDefault(); window.electronAPI.shell.openExternal('https://github.com/hicccc77/WeFlow') }}>GitHub 仓库</a>
-          <span>·</span>
-          <a href="#" onClick={(e) => { e.preventDefault(); window.electronAPI.shell.openExternal('https://chatlab.fun') }}>ChatLab</a>
-          <span>·</span>
-          <a href="#" onClick={(e) => { e.preventDefault(); window.electronAPI.window.openAgreementWindow() }}>用户协议</a>
-        </div>
         <p className="copyright">© 2026 天鹰销售小助手. All rights reserved.</p>
 
         <div className="log-toggle-line" style={{ marginTop: '16px', justifyContent: 'center' }}>
@@ -4958,8 +4847,6 @@ JSON 输出格式：
 }
 
 export default SettingsPage
-
-
 
 
 

@@ -16,6 +16,8 @@
 import https from 'https'
 import http from 'http'
 import { URL } from 'url'
+import aiInsightSystemPrompt from '../../shared/aiInsightSystemPrompt.txt?raw'
+import aiMessageInsightSystemPrompt from '../../shared/aiMessageInsightSystemPrompt.txt?raw'
 import { ConfigService } from './config'
 import { chatService, ChatSession, Message } from './chatService'
 import { snsService } from './snsService'
@@ -49,6 +51,8 @@ const API_TEMPERATURE = 0.7
 const INSIGHT_NOTIFICATION_AVATAR_URL = './assets/insight/AI_Insight.png'
 const MIMO_FOOTPRINT_MIN_TOKENS = 4096
 const FOOTPRINT_API_TEMPERATURE = 0.2
+const AI_INSIGHT_SYSTEM_PROMPT = String(aiInsightSystemPrompt || '').trim()
+const AI_MESSAGE_INSIGHT_SYSTEM_PROMPT = String(aiMessageInsightSystemPrompt || '').trim()
 
 const DEFAULT_FOOTPRINT_SYSTEM_PROMPT = `你是“我的微信足迹”模块的总结器，只能根据用户提供的统计数据生成最终复盘文案。
 硬性输出规则：
@@ -908,24 +912,7 @@ ${topMentionText}
     const beforeText = beforeMessages.length > 0 ? beforeMessages.map(formatLine).join('\n') : '无'
     const afterText = afterMessages.length > 0 ? afterMessages.map(formatLine).join('\n') : '无'
 
-    const DEFAULT_MESSAGE_INSIGHT_PROMPT = `你是一个克制、准确的聊天语义分析助手。你的任务是把用户选中的一句聊天消息做深度解析，帮助用户理解对方未明说的含义。
-
-严格要求：
-1. 必须且只能输出合法的纯 JSON。
-2. 禁止输出解释说明、前言后语，禁止使用 Markdown 或代码块。
-3. 不要编造上下文没有支持的信息；不确定时用谨慎表述。
-4. explicit_text 用自然中文说明这句话可能想表达的真实含义。
-5. emotion、intent、topic 必须是短标签。
-
-JSON 输出格式：
-{
-  "explicit_text": "暗示转明示",
-  "emotion": "2-6字情绪标签",
-  "intent": "2-8字意图标签",
-  "topic": "2-8字话题标签"
-}`
-    const customPrompt = String(this.config.get('aiMessageInsightSystemPrompt') || '').trim()
-    const systemPrompt = customPrompt || DEFAULT_MESSAGE_INSIGHT_PROMPT
+    const systemPrompt = AI_MESSAGE_INSIGHT_SYSTEM_PROMPT
     const userPromptBase = `会话：${displayName}
 目标发送者：${targetSenderName}
 目标消息时间：${this.formatInsightMessageTimestamp(targetCreateTime)}
@@ -1572,18 +1559,7 @@ ${afterText}
     const socialContextSection = await this.getSocialContextSection(sessionId)
     const profileContextSection = insightProfileService.getProfileContextSection(sessionId)
 
-    // ── 默认 system prompt（稳定内容，有利于 provider 端 prompt cache 命中）────
-    const DEFAULT_SYSTEM_PROMPT = `你是用户的私人关系观察助手，名叫"见解"。你的任务是主动提供有价值的观察和建议。
-
-要求：
-1. 必须给出见解。基于聊天记录分析对方情绪、话题趋势、关系动态，或给出回复建议、聊天话题推荐。
-2. 直接、具体、一针见血。不要废话。
-3. 输出纯文本，不使用 Markdown。
-4. 只有在完全没有任何可说的内容时（比如对话只有一条"嗯"），才回复"SKIP"。绝大多数情况下你应该输出见解。`
-
-    // 优先使用用户自定义 prompt，为空则使用默认值
-    const customPrompt = (this.config.get('aiInsightSystemPrompt') as string) || ''
-    const systemPrompt = customPrompt.trim() || DEFAULT_SYSTEM_PROMPT
+    const systemPrompt = AI_INSIGHT_SYSTEM_PROMPT
 
     const userPromptBase = [
       triggerReason === 'silence' && silentDays

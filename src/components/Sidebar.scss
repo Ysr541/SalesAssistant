@@ -15,7 +15,10 @@
     width: 68px;
 
     .sidebar-user-card-wrap {
-      margin: 0 8px 8px;
+      margin: 0 auto 8px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
     }
 
     .sidebar-user-card {
@@ -23,6 +26,7 @@
       justify-content: center;
       min-height: 44px;
       max-height: 44px;
+      width: 44px;
 
       .user-meta {
         display: none;
@@ -217,13 +221,14 @@
   padding: 4px;
   box-shadow: var(--shadow-md);
   opacity: 0;
-  transform: translateY(6px) scale(0.97);
+  transform-origin: top center;
+  transform: translateX(var(--sidebar-user-menu-translate-x, 0)) translateY(6px) scale(0.97);
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
 
   &.open {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(var(--sidebar-user-menu-translate-x, 0)) translateY(0) scale(1);
     pointer-events: auto;
   }
 }
