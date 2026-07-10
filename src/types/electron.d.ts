@@ -1341,8 +1341,8 @@ export interface ElectronAPI {
     onProgress: (callback: (payload: ExportProgress) => void) => () => void
   }
   whisper: {
-    downloadModel: () => Promise<{ success: boolean; modelPath?: string; tokensPath?: string; error?: string }>
-    getModelStatus: () => Promise<{ success: boolean; exists?: boolean; modelPath?: string; tokensPath?: string; sizeBytes?: number; error?: string }>
+    downloadModel: (modelDir?: string) => Promise<{ success: boolean; modelPath?: string; tokensPath?: string; error?: string }>
+    getModelStatus: (modelDir?: string) => Promise<{ success: boolean; exists?: boolean; modelPath?: string; tokensPath?: string; sizeBytes?: number; error?: string }>
     onDownloadProgress: (callback: (payload: { modelName: string; downloadedBytes: number; totalBytes?: number; percent?: number }) => void) => () => void
   }
   sns: {

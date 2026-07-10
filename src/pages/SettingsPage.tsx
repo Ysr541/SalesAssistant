@@ -313,6 +313,10 @@ function SettingsPage({ onClose }: SettingsPageProps = {}) {
   const [aiInsightProfileActiveSessionId, setAiInsightProfileActiveSessionId] = useState<string | null>(null)
   const [aiFootprintEnabled, setAiFootprintEnabled] = useState(false)
   const [aiFootprintSystemPrompt, setAiFootprintSystemPrompt] = useState('')
+  const [aiGroupSummaryEnabled, setAiGroupSummaryEnabled] = useState(false)
+  const [aiGroupSummaryIntervalHours, setAiGroupSummaryIntervalHours] = useState(24)
+  const [aiGroupSummarySystemPrompt, setAiGroupSummarySystemPrompt] = useState('')
+  const [aiGroupSummaryFilterList, setAiGroupSummaryFilterList] = useState<string[]>([])
   const [aiMessageInsightEnabled, setAiMessageInsightEnabled] = useState(false)
   const [aiMessageInsightContextCount, setAiMessageInsightContextCount] = useState(50)
 

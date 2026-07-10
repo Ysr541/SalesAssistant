@@ -57,7 +57,7 @@ export default function LockScreen({ onUnlock, avatar, useHello = false }: LockS
         setError('')
 
         try {
-            const result = await window.electronAPI.auth.hello()
+            const result = await (window.electronAPI as any).auth?.hello?.()
 
             if (result.success) {
                 handleUnlock()
@@ -82,7 +82,7 @@ export default function LockScreen({ onUnlock, avatar, useHello = false }: LockS
 
         try {
             // 发送原始密码到主进程，由主进程验证并解密密钥
-            const result = await window.electronAPI.auth.unlock(password)
+            const result = await (window.electronAPI as any).auth?.unlock?.(password)
 
             if (result.success) {
                 handleUnlock()
