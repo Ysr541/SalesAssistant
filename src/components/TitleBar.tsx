@@ -36,8 +36,8 @@ function TitleBar({
   return (
     <div className="title-bar">
       <div className="title-brand">
-        {showLogo && <img src="./logo.png" alt="天鹰销售小助手" className="title-logo" />}
-        <span className="titles">{title || '天鹰销售小助手'}</span>
+        {showLogo && <img src="./logo.png" alt="WeFlow" className="title-logo" />}
+        <span className="titles">{title || 'WeFlow'}</span>
         {onToggleSidebar ? (
           <button
             type="button"

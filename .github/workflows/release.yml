@@ -42,6 +42,14 @@ jobs:
           VERSION=${GITHUB_REF_NAME#v}
           node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));p.version='$VERSION';fs.writeFileSync('package.json',JSON.stringify(p,null,2)+'\n')"
 
+      - name: Verify WeFlow runtime identity
+        shell: bash
+        run: |
+          node -e "const p=require('./package.json');const expected={name:'weflow',appId:'com.WeFlow.app',productName:'WeFlow'};const actual={name:p.name,appId:p.build?.appId,productName:p.build?.productName};for(const key of Object.keys(expected)){if(actual[key]!==expected[key]){throw new Error(key+' must remain '+expected[key]+' for the protected Windows runtime (received '+actual[key]+')')}}"
+          test -f resources/wcdb/win32/x64/wcdb_api.dll
+          test -f resources/wcdb/win32/x64/WCDB.dll
+          test -f resources/wcdb/win32/x64/SDL2.dll
+
       - name: Type check
         run: npm run typecheck
 

@@ -1954,7 +1954,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hira
 <div class="container">
     <div class="feed-hd"><h2>朋友圈</h2><span class="info">共 ${posts.length} 条${filterInfo ? ` · ${filterInfo}` : ''}</span></div>
     ${postsHtml}
-    <div class="ft">由天鹰销售小助手导出 · ${new Date().toLocaleString('zh-CN')}</div>
+    <div class="ft">由WeFlow导出 · ${new Date().toLocaleString('zh-CN')}</div>
 </div>
 <div class="lb" id="lb" onclick="closeLb()"><img id="lbi" src=""></div>
 <button class="btt" id="btt" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>

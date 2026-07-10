@@ -603,7 +603,7 @@ function AccountManagementPage() {
       )}
 
       <footer className="account-management-footer">
-        删除仅影响天鹰销售小助手本地配置，不会删除微信原始数据文件。
+        删除仅影响WeFlow本地配置，不会删除微信原始数据文件。
       </footer>
     </div>
   )

@@ -60,11 +60,11 @@ function BackupPage() {
     try {
       const hasResources = resourceOptions.includeImages || resourceOptions.includeVideos || resourceOptions.includeFiles
       const extension = hasResources ? 'tar' : 'tar.gz'
-      const defaultPath = `天鹰销售小助手-db-backup-${new Date().toISOString().slice(0, 10)}.${extension}`
+      const defaultPath = `WeFlow-db-backup-${new Date().toISOString().slice(0, 10)}.${extension}`
       const result = await window.electronAPI.dialog.saveFile({
         title: '保存数据库备份',
         defaultPath,
-        filters: [{ name: '天鹰销售小助手 数据库备份', extensions: hasResources ? ['tar'] : ['gz'] }]
+        filters: [{ name: 'WeFlow 数据库备份', extensions: hasResources ? ['tar'] : ['gz'] }]
       })
       if (result.canceled || !result.filePath) {
         setMessage('已取消')
@@ -101,7 +101,7 @@ function BackupPage() {
         title: '选择数据库备份',
         properties: ['openFile'],
         filters: [
-          { name: '天鹰销售小助手 数据库备份', extensions: ['tar', 'gz', 'tgz'] },
+          { name: 'WeFlow 数据库备份', extensions: ['tar', 'gz', 'tgz'] },
           { name: '所有文件', extensions: ['*'] }
         ]
       })

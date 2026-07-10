@@ -535,7 +535,7 @@ class ChatService {
     try {
       await dialog.showMessageBox({
         type: 'error',
-        title: '天鹰销售小助手 启动失败',
+        title: 'WeFlow 启动失败',
         message: '启动失败，请反馈错误码。',
         detail,
         buttons: ['确定'],

@@ -224,7 +224,7 @@ const getSystemLaunchAtStartup = (): boolean => {
   try {
     return app.getLoginItemSettings().openAtLogin === true
   } catch (error) {
-    console.error('[天鹰销售小助手] 读取开机自启动状态失败:', error)
+    console.error('[WeFlow] 读取开机自启动状态失败:', error)
     return false
   }
 }
@@ -310,7 +310,7 @@ const syncLaunchAtStartupPreference = () => {
   const result = setSystemLaunchAtStartup(storedPreference)
   configService.set('launchAtStartup', result.enabled)
   if (!result.success && result.error) {
-    console.error('[天鹰销售小助手] 同步开机自启动设置失败:', result.error)
+    console.error('[WeFlow] 同步开机自启动设置失败:', result.error)
   }
 }
 
@@ -345,7 +345,7 @@ function sanitizePathEnv() {
   const filtered = parts.filter(isSafe)
   if (filtered.length !== parts.length) {
     const removed = parts.filter((p) => !isSafe(p))
-    console.warn('[天鹰销售小助手] 使用白名单裁剪 PATH，移除目录:', removed)
+    console.warn('[WeFlow] 使用白名单裁剪 PATH，移除目录:', removed)
     const nextPath = filtered.join(sep)
     process.env.PATH = nextPath
     process.env.Path = nextPath
@@ -1923,7 +1923,7 @@ function registerIpcHandlers() {
     if (isLaunchAtStartupSupported() && getSystemLaunchAtStartup()) {
       const result = setSystemLaunchAtStartup(false)
       if (!result.success && result.error) {
-        console.error('[天鹰销售小助手] 清空配置时关闭开机自启动失败:', result.error)
+        console.error('[WeFlow] 清空配置时关闭开机自启动失败:', result.error)
       }
     }
     configService?.clear()
@@ -4316,7 +4316,7 @@ app.whenReady().then(async () => {
 
   try {
     tray = new Tray(resolvedTrayIcon)
-    tray.setToolTip('天鹰销售小助手')
+    tray.setToolTip('WeFlow')
     const contextMenu = Menu.buildFromTemplate([
       {
         label: '显示主窗口',

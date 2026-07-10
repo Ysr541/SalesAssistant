@@ -1,7 +1,7 @@
 {
-  "name": "tianyingsales-assistant",
-  "version": "1.0.0",
-  "description": "天鹰销售小助手",
+  "name": "weflow",
+  "version": "5.0.0",
+  "description": "WeFlow",
   "main": "dist-electron/main.js",
   "author": {
     "name": "cc",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ysr541/SalesAssistant.git"
+    "url": "https://github.com/hicccc77/WeFlow"
   },
   "//": "二改不应改变此处的作者与应用信息",
   "scripts": {
@@ -75,14 +75,14 @@
     }
   },
   "build": {
-    "appId": "com.tianyingsales.app",
+    "appId": "com.WeFlow.app",
     "publish": {
       "provider": "github",
-      "owner": "Ysr541",
-      "repo": "SalesAssistant",
+      "owner": "hicccc77",
+      "repo": "WeFlow",
       "releaseType": "release"
     },
-    "productName": "天鹰销售小助手",
+    "productName": "WeFlow",
     "artifactName": "${productName}-${version}-Setup.${ext}",
     "directories": {
       "output": "release"
@@ -174,8 +174,8 @@
         "tar.gz"
       ],
       "category": "Utility",
-      "executableName": "天鹰销售小助手",
-      "synopsis": "天鹰销售小助手 for Linux",
+      "executableName": "WeFlow",
+      "synopsis": "WeFlow for Linux",
       "extraFiles": [
         {
           "from": "resources/installer/linux/install.sh",

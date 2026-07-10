@@ -372,7 +372,7 @@ export class KeyServiceMac {
       return '获取失败：helper 未返回可识别结果，请彻底退出微信后重启电脑再试。'
     }
     if (text.includes('xkey_helper not found')) {
-      return '获取失败：未找到 xkey_helper，请重新安装天鹰销售小助手后重试。'
+      return '获取失败：未找到 xkey_helper，请重新安装WeFlow后重试。'
     }
     return '自动获取密钥失败：环境可能受限或版本暂未适配，请稍后重试。'
   }
@@ -701,9 +701,9 @@ export class KeyServiceMac {
       const isDevElectron = process.execPath.includes('/node_modules/electron/')
       if (normalizedDetail.includes('task_for_pid:5')) {
         if (isDevElectron) {
-          return `无法附加到微信进程（task_for_pid 被拒绝）。当前为开发环境 Electron：${process.execPath}\n建议使用打包后的天鹰销售小助手.app（已携带调试 entitlements）再重试。`
+          return `无法附加到微信进程（task_for_pid 被拒绝）。当前为开发环境 Electron：${process.execPath}\n建议使用打包后的WeFlow.app（已携带调试 entitlements）再重试。`
         }
-        return '无法附加到微信进程（task_for_pid 被系统拒绝）。请确认当前运行程序已正确签名并包含调试 entitlements，优先使用打包版天鹰销售小助手.app。'
+        return '无法附加到微信进程（task_for_pid 被系统拒绝）。请确认当前运行程序已正确签名并包含调试 entitlements，优先使用打包版WeFlow.app。'
       }
       if (normalizedDetail.includes('thread_get_state_failed')) {
         return `无法附加到进程：系统拒绝读取线程状态（${normalizedDetail}）。`
@@ -733,7 +733,7 @@ export class KeyServiceMac {
     }
     if (code === 'SCAN_FAILED') {
       if (!normalizedDetail) {
-        return '内存扫描失败：未匹配到可用特征。可能是当前微信版本更新导致，请升级天鹰销售小助手后重试。'
+        return '内存扫描失败：未匹配到可用特征。可能是当前微信版本更新导致，请升级WeFlow后重试。'
       }
       if (normalizedDetail.includes('Sink pattern not found')) {
         return '内存扫描失败：未匹配到目标函数特征（Sink pattern not found），当前微信版本可能暂未适配。'

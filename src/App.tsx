@@ -532,7 +532,7 @@ function App() {
               <h2>用户协议与隐私政策</h2>
             </div>
             <div className="agreement-content">
-              <p>欢迎使用天鹰销售小助手！在使用本软件前，请仔细阅读以下条款：</p>
+              <p>欢迎使用WeFlow！在使用本软件前，请仔细阅读以下条款：</p>
               <div className="agreement-text">
                 <h4>1. 数据安全</h4>
                 <p>本软件所有数据处理均在本地完成，不会上传任何聊天记录、个人信息到服务器。你的数据完全由你自己掌控。</p>
@@ -575,7 +575,7 @@ function App() {
             </div>
             <div className="agreement-content">
               <div className="agreement-text">
-                <p>为了持续改进 天鹰销售小助手 并提供更好的用户体验，我们希望收集一些匿名的使用数据。</p>
+                <p>为了持续改进 WeFlow 并提供更好的用户体验，我们希望收集一些匿名的使用数据。</p>
 
                 <h4>我们会收集什么？</h4>
                 <p>• 功能使用情况（如哪些功能被使用、使用频率）</p>
