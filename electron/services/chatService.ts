@@ -7,7 +7,7 @@ import * as https from 'https'
 import * as http from 'http'
 import * as fzstd from 'fzstd'
 import * as crypto from 'crypto'
-import { app, BrowserWindow, dialog } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import { ConfigService } from './config'
 import { wcdbService } from './wcdbService'
 import { MessageCacheService } from './messageCacheService'
@@ -419,7 +419,6 @@ class ChatService {
   private readonly allGroupSessionIdsCacheTtlMs = 5 * 60 * 1000
   private groupMyMessageCountCacheScope = ''
   private groupMyMessageCountMemoryCache = new Map<string, GroupMyMessageCountCacheEntry>()
-  private initFailureDialogShown = false
   private readonly contactExtendedFieldCandidates = [
     'label_list', 'labelList', 'labels', 'label_names', 'labelNames', 'tags', 'tag_list', 'tagList',
     'detail_description', 'detailDescription', 'description', 'desc', 'contact_description', 'contactDescription', 'signature', 'sign',
@@ -511,41 +510,6 @@ class ChatService {
     return `错误码: ${code}`
   }
 
-  private async maybeShowInitFailureDialog(errorMessage: string): Promise<void> {
-    if (!app.isPackaged) return
-    if (this.initFailureDialogShown) return
-
-    const code = this.extractErrorCode(errorMessage)
-    if (code === null) return
-    const isSecurityCode =
-      code === -101 ||
-      code === -102 ||
-      code === -2299 ||
-      code === -2301 ||
-      code === -2302 ||
-      code === -1006 ||
-      (code <= -2201 && code >= -2212)
-    if (!isSecurityCode) return
-
-    this.initFailureDialogShown = true
-    const detail = [
-      `错误码: ${code}`
-    ].join('\n')
-
-    try {
-      await dialog.showMessageBox({
-        type: 'error',
-        title: 'WeFlow 启动失败',
-        message: '启动失败，请反馈错误码。',
-        detail,
-        buttons: ['确定'],
-        noLink: true
-      })
-    } catch {
-      // 弹窗失败不阻断主流程
-    }
-  }
-
   /**
    * 连接数据库
    */
@@ -577,7 +541,6 @@ class ChatService {
       const openOk = await wcdbService.open(accountDir, decryptKey)
       if (!openOk) {
         const detailedError = this.toCodeOnlyMessage(await wcdbService.getLastInitError())
-        await this.maybeShowInitFailureDialog(detailedError)
         return { success: false, error: detailedError }
       }
 
